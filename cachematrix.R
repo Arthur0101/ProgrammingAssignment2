@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+## fork from https://github.com/rdpeng/ProgrammingAssignment2  
+## improve performance of computing the inverse of matrix by caching result 
 
-## Write a short comment describing this function
+## prepare the function for cacheSolve() 
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    r <- NULL
+    set <- function(y) {
+        x <<- y
+        r <<- NULL
+    }
+    get <- function() x
+    setRmatrix <- function(rmatrix) r <<- rmatrix
+    getRmatrix <- function() r
+    list(set = set, get = get,
+         setRmatrix = setRmatrix,
+         getRmatrix = getRmatrix)
 }
 
 
-## Write a short comment describing this function
+## check if the result is ready, if the result is ready, return the cached result directly 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    r <- x$getRmatrix()
+    if(!is.null(r)) {
+        message("getting cached data")
+        return(r)
+    }
+    data <- x$get()
+    r <- solve(data, ...)
+    x$setRmatrix(r)
+    r
 }
